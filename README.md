@@ -13,11 +13,12 @@ Tested on Ubuntu 14.04, and Windows 10, **no guarantees** on anything else!
 
 ## Introduction
 This program has the following features:
-* enter your own server ip/fqdm
-* presets for public iperf3 servers
+* enter your own server ip/fqdn
+* pre-sets for public iperf3 servers
 * ports configurable (and presets)
 * several (not all) options graphically configurable
 * large gauge display
+* auto ranging
 * works on windows or linux
 * shows ping values
 * gives download and upload speeds
