@@ -23,7 +23,7 @@ This program has the following features:
 ![screenshot](https://github.com/NickWaterton/iperf3-GUI/blob/master/Screenshot%202018-04-24%2018.19.46.png "Screenshot")
 
 ## Pre-Requisites
-you need iperf3 installed. It can be downloaded from here: https://iperf.fr/iperf-download.php
+You need iperf3 installed. It can be downloaded from here: https://iperf.fr/iperf-download.php
 
 ## Dependencies
 The program will optionally use pyping if you have it installed, otherwise it uses plain old ping.
@@ -36,14 +36,14 @@ First you need python 2.7 installed. **This program will not work with Python 3.
 
 now clone the repository from GitHub (obviously you need `git` installed)
 ```bash
-git clone git clone https://github.com/NickWaterton/iperf3-GUI.git
-cd cd iPerf\ GUI/
+git clone https://github.com/NickWaterton/iperf3-GUI.git
+cd iperf3-GUI
 ```
 You should now have the program `iperf.py` - make sure the file is executable
 
 No need to install anything, you can just run the program as is.
 
-run `././iperf.py -h` (or `python ./iperf.py -h` if you are on windows)
+run `./iperf.py -h` (or `python ./iperf.py -h` if you are on windows)
 
 ```
 usage: iperf.py [-h] [-I IPERF_EXEC] [-ip IP_ADDRESS] [-p PORT] [-r RANGE]
@@ -70,7 +70,7 @@ optional arguments:
 ```
 
 ## Quick Start
-You need to know the pathname of your iperf3 executable, the default is iperf3, but you can use the -I option to specify the pathname
+You need to know the pathname of your iperf3 executable, the default is `iperf3`, but you can use the `-I` option to specify the pathname
 for example on my Windows system I use
 ```bash
 python .\iperf.py -I D:\utils\iperf3.exe
@@ -81,6 +81,12 @@ Using Linux, the default usually works just fine (if iperf3 was installed using 
 .\iperf.py
 ```
 
-You may need to be Administrator to use ping - it works fine for me as none-administrator, but read the pyping page (if you are using it).
+You may need to be Administrator to use ping - it works fine for me as none-Administrator, but read the pyping page (if you are using it).
+
+To test on your local network, you will need another computer running another copy of iperf3 as as server:
+```bash
+.\iperf3 -s
+```
+You can then test your local network/wifi speeds against the new server you just started using it's ip address.
 
 That's it!
