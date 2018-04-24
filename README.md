@@ -9,6 +9,8 @@ If you want to use it with python 3.xx some work will need to be done.
 
 Tested on Ubuntu 14.04, and Windows 10, **no guarantees** on anything else!
 
+*The meter.py code was found on the net somewhere and modified by me, so if you recognize it - credit to whoever you are*
+
 ## Introduction
 This program has the following features:
 * enter your own server ip/fqdm
