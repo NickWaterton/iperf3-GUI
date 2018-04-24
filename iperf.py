@@ -353,7 +353,7 @@ def main():
     import argparse
     max_mode_choices = ['OFF', 'Track', 'Peak']
     parser = argparse.ArgumentParser(description='Iperf3 GUI Network Speed Tester')
-    parser.add_argument('-I','--iperf_exec', action="store", default='d:\\utils\\iperf3', help='location and name of iperf3 executable (default=%(default)s)')
+    parser.add_argument('-I','--iperf_exec', action="store", default='iperf3', help='location and name of iperf3 executable (default=%(default)s)')
     parser.add_argument('-ip','--ip_address', action="store", default='192.168.100.119', help='default server address (default=%(default)s)')
     parser.add_argument('-p','--port', action="store", default='5201', help='server port (default=%(default)s)')
     parser.add_argument('-r','--range', action="store", type=int, default=10, help='range to start with in Mbps (default=%(default)s)')
