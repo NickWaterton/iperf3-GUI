@@ -20,6 +20,8 @@ This program has the following features:
 * shows ping values
 * gives download and upload speeds
 
+![screenshot](https://github.com/NickWaterton/iperf3-GUI/blob/master/Screenshot%202018-04-24%2018.19.46.png "Screenshot")
+
 ## Pre-Requisites
 you need iperf3 installed. It can be downloaded from here: https://iperf.fr/iperf-download.php
 
