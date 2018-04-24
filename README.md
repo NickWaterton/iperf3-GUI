@@ -34,7 +34,7 @@ First you need python 2.7 installed. **This program will not work with Python 3.
 
 now clone the repository from GitHub (obviously you need `git` installed)
 ```bash
-git clone git clone https://github.com/NickWaterton/iPerf GUI.git
+git clone git clone https://github.com/NickWaterton/iperf3-GUI.git
 cd cd iPerf\ GUI/
 ```
 You should now have the program `iperf.py` - make sure the file is executable
