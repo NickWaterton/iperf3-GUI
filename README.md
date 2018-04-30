@@ -1,6 +1,8 @@
 Graphical User Interface for iperf3
 ===================================
 
+![screenshot](https://github.com/NickWaterton/iperf3-GUI/blob/master/Screenshot%202018-04-30%2015.27.12.png "Screenshot")
+
 This is a python 2.7 program to give a graphical front end to iperf3
 
 This is version 1.0 so it may be buggy!
