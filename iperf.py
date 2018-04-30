@@ -757,7 +757,7 @@ def main():
     parser.add_argument('-l','--local_ip', action="store", default=None, help='local public ip address, if not given, will be fetched automatically (default=%(default)s)')
     parser.add_argument('-p','--port', action="store", default='5201', help='server port (default=%(default)s)')
     parser.add_argument('-r','--range', action="store", type=int, default=10, help='range to start with in Mbps (default=%(default)s)')
-    parser.add_argument('-R','--reset_range', action='store_false', help='Do NOT Reset range to Default for Upload test', default = True)
+    parser.add_argument('-R','--reset_range', action='store_false', help='Reset range to Default for Upload test (default = %(default)s)', default = True)
     parser.add_argument('-m','--max_mode', action='store', choices=max_mode_choices, help='Show Peak Mode (default = %(default)s)', default = max_mode_choices[2])
     parser.add_argument('-G','--geography', action='store_false', help='Show map data (default = %(default)s)', default = True)
     parser.add_argument('-D','--debug', action='store_true', help='debug mode', default = False)

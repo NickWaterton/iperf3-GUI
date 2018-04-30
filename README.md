@@ -78,14 +78,14 @@ optional arguments:
   -p PORT, --port PORT  server port (default=5201)
   -r RANGE, --range RANGE
                         range to start with in Mbps (default=10)
-  -R, --reset_range     Do NOT Reset range to Default for Upload test
+  -R, --reset_range     Reset range to Default for Upload test (default =
+                        True)
   -m {OFF,Track,Peak}, --max_mode {OFF,Track,Peak}
                         Show Peak Mode (default = Peak)
   -G, --geography       Show map data (default = True)
   -D, --debug           debug mode
   -V, --verbose         print everything
   -v, --version         show program's version number and exit
-
 ```
 
 ## Quick Start
