@@ -4,13 +4,18 @@ Graphical User Interface for iperf3
 This is a python 2.7 program to give a graphical front end to iperf3
 
 This is version 1.0 so it may be buggy!
+
 *NEW Now V1.1 - big re-write with new features*
+
 **NOTE: This is a python 2.7 program**
+
 If you want to use it with python 3.xx some work will need to be done.
 
 Tested on Ubuntu 14.04, and Windows 10, **no guarantees** on anything else!
 
 *The meter.py code was found on the net somewhere and modified by me, so if you recognize it - credit to whoever you are*
+
+See https://iperf.fr/iperf-servers.php for details of the servers included as defaults.
 
 ## Introduction
 This program has the following features:
@@ -27,7 +32,7 @@ This program has the following features:
 * shows map of geography
 * saves data in config.ini file
 
-![screenshot](https://github.com/NickWaterton/iperf3-GUI/blob/master/Screenshot%202018-04-30%14.48.08.png "Screenshot")
+![screenshot](https://github.com/NickWaterton/iperf3-GUI/blob/master/Screenshot%202018-04-30%2014.48.08.png "Screenshot")
 
 ## Pre-Requisites
 You need iperf3 installed. It can be downloaded from here: https://iperf.fr/iperf-download.php
@@ -103,7 +108,7 @@ To test on your local network, you will need another computer running another co
 ```
 You can then test your local network/wifi speeds against the new server you just started using it's ip address.
 
-if you select a remote server, you can test your actual internet speeds.
+If you select a remote server, you can test your actual internet speeds.
 
 You can enter a new server in the 'server' combobox, if it validates as an iperf3 server, the new server (plus maps etc) will be saved in the config.ini file, and automatically loaded the next time the program is started.
 
