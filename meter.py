@@ -13,9 +13,6 @@ class Meter(tk.Canvas):
         self.max_val = 0
         self.range = self.ranges[0]
         self.current_value = 0
-        self.smooth_step_slow = 5
-        self.smooth_step_fast = 10
-        self.smooth_step = self.smooth_step_slow    #default
         self.layoutparams()
         self.graphics()
         self.createhand()
@@ -132,7 +129,7 @@ class Meter(tk.Canvas):
     def setrange(self,start = 0, end=100):
         self.start = start
         self.range = end - start
-        self.current_value = start
+        #self.current_value = start
         for val_index, angle in enumerate(range(-60,241,30)):   #relabel major ticks.
             value = str(int(float(angle+60)/300.0*self.range))
             self.itemconfigure(self.tick_values[val_index],text = value)
@@ -141,22 +138,18 @@ class Meter(tk.Canvas):
         self.itemconfigure(self.unitsid,text = str(text))
         
     def smooth_set(self, value, arc=False):
-        #do a smooth update, rather than jump to value
-        tmp_value = self.current_value
-
-        while self.current_value < value or self.current_value > value:
-            step = min(self.smooth_step, max(1,abs(value-self.current_value)))
-            if value < self.current_value:
-                step = -step
-            tmp_value = max(0,tmp_value+step)
-            self.set(tmp_value, arc)
-            #time.sleep(0.01)
-            time_delay = 1.0/(max(1.0,float(abs(value-self.current_value)))*0.5)
-            #print("step: %s delay: %s, tmp_value: %s value: %s current_value: %s" % (step, time_delay,tmp_value, value, self.current_value))
-            time.sleep(min(0.1,time_delay))
+        '''
+        do a smooth update, rather than jump to value
+        y += alpha * (x-y)  #low pass filter algorithm
+        alpha defines response time
+        '''
+        alpha = 0.1
+        result = self.current_value
+        while int(result) != int(value):
+            result += alpha * float(value-self.current_value)
+            self.set(int(result), arc)
+            time.sleep(0.01)
             self.update_idletasks()
-
-        self.set(value, arc)
         
     def set(self,value, arc=False):
         # call this to set the hand (jump to value)
@@ -179,12 +172,10 @@ class Meter(tk.Canvas):
         #draw arc if selected
         if arc:
             if self.show_max == 0:      #off
-                self.smooth_step = self.smooth_step_slow
                 return
             elif self.show_max == 1:    #live
-                self.smooth_step = self.smooth_step_fast
+                pass
             elif self.show_max == 2:    #hold peak
-                self.smooth_step = self.smooth_step_fast
                 if value < self.max_val:
                     return
                 else:

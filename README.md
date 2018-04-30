@@ -4,6 +4,7 @@ Graphical User Interface for iperf3
 This is a python 2.7 program to give a graphical front end to iperf3
 
 This is version 1.0 so it may be buggy!
+*NEW Now V1.1 - big re-write with new features*
 **NOTE: This is a python 2.7 program**
 If you want to use it with python 3.xx some work will need to be done.
 
@@ -22,8 +23,11 @@ This program has the following features:
 * works on windows or linux
 * shows ping values
 * gives download and upload speeds
+* shows Distance/City/Country of server
+* shows map of geography
+* saves data in config.ini file
 
-![screenshot](https://github.com/NickWaterton/iperf3-GUI/blob/master/Screenshot%202018-04-24%2018.19.46.png "Screenshot")
+![screenshot](https://github.com/NickWaterton/iperf3-GUI/blob/master/Screenshot%202018-04-30%14.48.08.png "Screenshot")
 
 ## Pre-Requisites
 You need iperf3 installed. It can be downloaded from here: https://iperf.fr/iperf-download.php
@@ -49,8 +53,9 @@ No need to install anything, you can just run the program as is.
 run `./iperf.py -h` (or `python ./iperf.py -h` if you are on windows)
 
 ```
-usage: iperf.py [-h] [-I IPERF_EXEC] [-ip IP_ADDRESS] [-p PORT] [-r RANGE]
-                [-R] [-m {OFF,Track,Peak}] [-D] [-V] [-v]
+usage: iperf.py [-h] [-I IPERF_EXEC] [-ip [IP_ADDRESS [IP_ADDRESS ...]]]
+                [-l LOCAL_IP] [-p PORT] [-r RANGE] [-R] [-m {OFF,Track,Peak}]
+                [-G] [-D] [-V] [-v]
 
 Iperf3 GUI Network Speed Tester
 
@@ -59,17 +64,23 @@ optional arguments:
   -I IPERF_EXEC, --iperf_exec IPERF_EXEC
                         location and name of iperf3 executable
                         (default=iperf3)
-  -ip IP_ADDRESS, --ip_address IP_ADDRESS
-                        default server address (default=192.168.100.119)
+  -ip [IP_ADDRESS [IP_ADDRESS ...]], --ip_address [IP_ADDRESS [IP_ADDRESS ...]]
+                        default server address('s) can be a list
+                        (default=[u'192.168.100.119'])
+  -l LOCAL_IP, --local_ip LOCAL_IP
+                        local public ip address, if not given, will be fetched
+                        automatically (default=None)
   -p PORT, --port PORT  server port (default=5201)
   -r RANGE, --range RANGE
                         range to start with in Mbps (default=10)
   -R, --reset_range     Do NOT Reset range to Default for Upload test
   -m {OFF,Track,Peak}, --max_mode {OFF,Track,Peak}
                         Show Peak Mode (default = Peak)
+  -G, --geography       Show map data (default = True)
   -D, --debug           debug mode
   -V, --verbose         print everything
   -v, --version         show program's version number and exit
+
 ```
 
 ## Quick Start
@@ -91,5 +102,13 @@ To test on your local network, you will need another computer running another co
 .\iperf3 -s
 ```
 You can then test your local network/wifi speeds against the new server you just started using it's ip address.
+
+if you select a remote server, you can test your actual internet speeds.
+
+You can enter a new server in the 'server' combobox, if it validates as an iperf3 server, the new server (plus maps etc) will be saved in the config.ini file, and automatically loaded the next time the program is started.
+
+You can add your own servers/ip addresses as a command line option `-ip` as a list of servers - these will not be saved in the config.ini file.
+Only remote servers are saved in the config.ini file, all local/private ip addresses are stored under your external ip address.
+If your external ip address cannot be determined, then maps are disabled. Also, if your external ip address changes, then new maps/distances will be stored in the config.ini file - in addition to the existing ones. So if you use a laptop, and move around, various maps/distances will be stored and reused depending on where you are. This is all automatic. If it goes wrong somehow, just delete config.ini and start again.
 
 That's it!
