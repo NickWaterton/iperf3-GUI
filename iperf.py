@@ -4,6 +4,7 @@ GUI for Iperf3
 see https://iperf.fr/iperf-servers.php for details of list of servers given
 N Waterton V 1.0 19th April 2018: initial release
 N Waterton V 1.1 26th April 2018: Added geographic data
+N Waterton V 1.2 4th May 2018: Added Yandex maps service due to impending google API key requirement.
 '''
 
 from __future__ import absolute_import
@@ -40,6 +41,21 @@ class Mainframe(tk.Frame):
         self.ip_address = None # ip address of current remote server
         self.arg = arg
         self.master = master
+        self.google_api_key = ''
+        if self.arg.google_api_key is not None:
+            self.print('using google api key: %s' % self.arg.google_api_key)
+            self.google_api_key = '&key=%s' % self.arg.google_api_key
+        else:
+            try:
+                from PIL import ImageTk, Image
+                import io
+                self.ImageTk = ImageTk
+                self.Image = Image
+                self.io = io
+                self.print('no google API key, using PIL and Yandex')
+            except ImportError:
+                self.print('No Google API key, or PIL library, maps are disabled')
+                self.arg.geography = False
         self.ip_info = {}
         self.distance = 0
         self.local_ip = self.arg.local_ip
@@ -387,6 +403,11 @@ class Mainframe(tk.Frame):
         except Exception as e:
             self.print('Error: %s' % e)
         return result
+        
+    def reverse_lat_long(self, ll):
+        lat_long= ll.split(',')
+        long_lat = ','.join(lat_long[::-1])
+        return long_lat
             
     def get_map(self, a,b):
         '''
@@ -398,15 +419,23 @@ class Mainframe(tk.Frame):
         a = a.replace(' ','')
         b = b.replace(' ','')
         
-        if a==b:
-            url = 'https://maps.googleapis.com/maps/api/staticmap?size=%sx%s&format=gif&maptype=roadmap&zoom=12&center=%s&markers=color:green%%7Clabel:L%%7C%s' % (map_size,map_size,a,a)
+        if self.arg.google_api_key is None: #use Yandex
+            if a==b:
+                url='http://static-maps.yandex.ru/1.x/?lang=en_US&size=%s,%s&z=10&l=map&pt=%s,pm2gnl' % (map_size,map_size,self.reverse_lat_long(a))
+            else:
+                url='http://static-maps.yandex.ru/1.x/?lang=en_US&size=%s,%s&l=map&pt=%s,pm2gnl~%s,pm2rdl' % (map_size,map_size,self.reverse_lat_long(a),self.reverse_lat_long(b))
+            self.print('getting map from Yandex: %s' % url)
         else:
-            c= ''
-            if self.distance > 500:
-                c = '&path=color:0x0000ff%%7Cweight:5%%7Cgeodesic:true%%7C%s%%7C%s' % (a,b)
-            url = 'https://maps.googleapis.com/maps/api/staticmap?size=%sx%s&format=gif&maptype=roadmap&markers=color:green%%7Clabel:L%%7C%s&markers=color:red%%7Clabel:S%%7C%s%s' % (map_size,map_size,a,b,c)
         
-        self.print('getting map from google: %s' % url)
+            if a==b:
+                url = 'https://maps.googleapis.com/maps/api/staticmap?size=%sx%s&format=gif&maptype=roadmap&zoom=12&center=%s&markers=color:green%%7Clabel:L%%7C%s%s' % (map_size,map_size,a,a,self.google_api_key)
+            else:
+                c= ''
+                if self.distance > 500:
+                    c = '&path=color:0x0000ff%%7Cweight:5%%7Cgeodesic:true%%7C%s%%7C%s' % (a,b)
+                url = 'https://maps.googleapis.com/maps/api/staticmap?size=%sx%s&format=gif&maptype=roadmap&markers=color:green%%7Clabel:L%%7C%s&markers=color:red%%7Clabel:S%%7C%s%s%s' % (map_size,map_size,a,b,c,self.google_api_key)
+            
+            self.print('getting map from google: %s' % url)
         try:
             req = urllib2.urlopen(url)
             b64_data = base64.encodestring(req.read())
@@ -661,11 +690,14 @@ class Mainframe(tk.Frame):
                 if self.map is None:
                     self.map = self.get_map(self.ip_info[self.local_ip]['ip_info']['coords'],self.ip_info[self.ip_address]['ip_info']['coords'])
                     self.ip_info[self.ip_address]['map'][self.local_ip] = self.map
-                    if self.map is not None: self.print('got map from google')
-                if self.map is not None:
-                    self.map_gif = tk.PhotoImage(data=self.map)
-                else:
+                    if self.map is not None: self.print('got map from google/yandex')
+                if self.map is None:
                     self.map_gif = tk.PhotoImage(data=self.no_map)
+                else:
+                    if self.arg.google_api_key is not None:
+                        self.map_gif = tk.PhotoImage(data=self.map)
+                    else:
+                        self.map_gif = self.ImageTk.PhotoImage(self.Image.open(self.io.BytesIO(base64.decodestring(self.map))))
             else:
                 self.map_gif = tk.PhotoImage(data=self.no_map)
             self.meter.grid(row=5, column=0, columnspan=2)
@@ -760,6 +792,7 @@ def main():
     parser.add_argument('-R','--reset_range', action='store_false', help='Reset range to Default for Upload test (default = %(default)s)', default = True)
     parser.add_argument('-m','--max_mode', action='store', choices=max_mode_choices, help='Show Peak Mode (default = %(default)s)', default = max_mode_choices[2])
     parser.add_argument('-G','--geography', action='store_false', help='Show map data (default = %(default)s)', default = True)
+    parser.add_argument('-g','--google_api_key', action="store", default=None, help='your google API key (to enable google maps) (default=%(default)s)')
     parser.add_argument('-D','--debug', action='store_true', help='debug mode', default = False)
     parser.add_argument('-V','--verbose', action='store_true', help='print everything', default = False)
     parser.add_argument('-v','--version', action='version',version='%(prog)s {version}'.format(version=__VERSION__))

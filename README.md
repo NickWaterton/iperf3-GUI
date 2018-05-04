@@ -5,10 +5,6 @@ Graphical User Interface for iperf3
 
 This is a python 2.7 program to give a graphical front end to iperf3
 
-This is version 1.0 so it may be buggy!
-
-*NEW Now V1.1 - big re-write with new features*
-
 **NOTE: This is a python 2.7 program**
 
 If you want to use it with python 3.xx some work will need to be done.
@@ -18,6 +14,13 @@ Tested on Ubuntu 14.04, and Windows 10, **no guarantees** on anything else!
 *The meter.py code was found on the net somewhere and modified by me, so if you recognize it - credit to whoever you are*
 
 See https://iperf.fr/iperf-servers.php for details of the servers included as defaults.
+
+## Revision History
+V1.2 - Added Yandex maps service due to impending google requirement for API key (both services now supported)
+V1.1 - Big re-write with new features, including google maps
+V1.0 : First release
+
+*NOTE: You are responsible for complying with all google/Yandex Terms of Service*
 
 ## Introduction
 This program has the following features:
@@ -45,6 +48,12 @@ The program will optionally use pyping if you have it installed, otherwise it us
 See:https://pypi.org/project/pyping/
 install with `pip install pyping`
 
+if you don't have a google API key, and you want to use maps, the program will attempt to use the free Yandex service (because OpenStreetMaps is hard to use), which requires the use of PIL/pillow to convert the map image format. if you don't have a google API key, or PIL/pillow, maps will be disabled.
+```bash
+<sudo> pip install pillow
+```
+*NOTE:* This may not work on some platforms
+
 ## Install
 First you need python 2.7 installed. **This program will not work with Python 3.x without some work**
 
@@ -62,7 +71,7 @@ run `./iperf.py -h` (or `python ./iperf.py -h` if you are on windows)
 ```
 usage: iperf.py [-h] [-I IPERF_EXEC] [-ip [IP_ADDRESS [IP_ADDRESS ...]]]
                 [-l LOCAL_IP] [-p PORT] [-r RANGE] [-R] [-m {OFF,Track,Peak}]
-                [-G] [-D] [-V] [-v]
+                [-G] [-g GOOGLE_API_KEY] [-D] [-V] [-v]
 
 Iperf3 GUI Network Speed Tester
 
@@ -70,7 +79,7 @@ optional arguments:
   -h, --help            show this help message and exit
   -I IPERF_EXEC, --iperf_exec IPERF_EXEC
                         location and name of iperf3 executable
-                        (default=iperf3)
+                        (default=D://utils//iperf3.exe)
   -ip [IP_ADDRESS [IP_ADDRESS ...]], --ip_address [IP_ADDRESS [IP_ADDRESS ...]]
                         default server address('s) can be a list
                         (default=[u'192.168.100.119'])
@@ -85,6 +94,9 @@ optional arguments:
   -m {OFF,Track,Peak}, --max_mode {OFF,Track,Peak}
                         Show Peak Mode (default = Peak)
   -G, --geography       Show map data (default = True)
+  -g GOOGLE_API_KEY, --google_api_key GOOGLE_API_KEY
+                        your google API key (to enable google maps)
+                        (default=None)
   -D, --debug           debug mode
   -V, --verbose         print everything
   -v, --version         show program's version number and exit
